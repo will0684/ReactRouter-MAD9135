@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Container } from "reactstrap";
 import Header from './Header';
 import ListContainer from './ListContainer';
-import spinningcircles from "./spinning-circles.svg"
-
+import Loader from "react-loader-spinner"
+import { Container } from "reactstrap";
 export default class UserPosts extends Component {
 
   constructor(props){
@@ -13,35 +12,50 @@ export default class UserPosts extends Component {
         id: "",
         title: "",
         body: ""
-      }]
+      }],
+      isLoading: true
     }
   }
 
   componentDidMount(){
-    fetch('https://jsonplaceholder.typicode.com/posts?userId=' + this.props.match.params.id)
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({
-        postsArray: json.map((post) => {
-          return { id: post.id, title: post.title, body: post.body }
+    if(this.props.match.params.id){
+      fetch('https://jsonplaceholder.typicode.com/posts?userId=' + this.props.match.params.id)
+      .then(response => response.json())
+      .then((json) => {
+        this.setState({
+          postsArray: json.map((post) => {
+            return { id: post.id, title: post.title, body: post.body }
+          })
         })
       })
-    })
+      .then(() => {this.setState({isLoading: false})})
+    } else {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then((json) => {
+        this.setState({
+          postsArray: json.map((post) => {
+            return { id: post.id, title: post.title, body: post.body }
+          })
+        })
+      })
+      .then(() => {this.setState({isLoading: false})})
+    }
   }
 
   render() {
     if(this.state.isLoading){
       return(
-        <React.Fragment>
-          <img src={spinningcircles}></img>
-        </React.Fragment>
+        <Container style={{ textAlign: 'center', marginTop: '35%' }}>
+          <Loader type="Circles" color="#00BFFF" height={80} width={80}/>
+        </Container>
       )
     } else {
     return (
-      <Container className="pr-0">
+      <React.Fragment>
         <Header />
         <ListContainer type="Posts" postsArray={this.state.postsArray}/>
-      </Container>
+      </React.Fragment>
     )
     }
   }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Header from './Header';
-import { Container } from "reactstrap";
 import ListContainer from './ListContainer';
-import spinningcircles from "./spinning-circles.svg"
+import Loader from "react-loader-spinner"
+import { Container } from "reactstrap";
 
 export default class UserTodos extends Component {
 
@@ -19,31 +19,44 @@ export default class UserTodos extends Component {
   }
 
   componentDidMount(){
-    fetch('https://jsonplaceholder.typicode.com/todos?userId=' + this.props.match.params.id)
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({
-        todosArray: json.map((todo) => {
-          return { id: todo.id, title: todo.title, completed: todo.completed }
+    if(this.props.match.params.id){
+      fetch('https://jsonplaceholder.typicode.com/todos?userId=' + this.props.match.params.id)
+      .then(response => response.json())
+      .then((json) => {
+        this.setState({
+          todosArray: json.map((todo) => {
+            return { id: todo.id, title: todo.title, completed: todo.completed }
+          })
         })
       })
-    })
-    .then(() => {this.setState({isLoading: false})})
+      .then(() => {this.setState({isLoading: false})})
+    } else {
+      fetch('https://jsonplaceholder.typicode.com/todos')
+      .then(response => response.json())
+      .then((json) => {
+        this.setState({
+          todosArray: json.map((todo) => {
+            return { id: todo.id, title: todo.title, completed: todo.completed }
+          })
+        })
+      })
+      .then(() => {this.setState({isLoading: false})})
+    }
   }
 
   render() {
     if(this.state.isLoading){
       return(
-        <React.Fragment>
-          <img src={spinningcircles}></img>
-        </React.Fragment>
+        <Container style={{ textAlign: 'center', marginTop: '35%' }}>
+          <Loader type="Circles" color="#00BFFF" height={80} width={80}/>
+        </Container>
       )
     } else {
       return (
-        <Container className="pr-0">
+        <React.Fragment>
           <Header />
           <ListContainer type="Todos" todosArray={this.state.todosArray} />
-        </Container>
+        </React.Fragment>
       )
     }
   }

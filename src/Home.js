@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Header from './Header';
 import ListContainer from './ListContainer';
+import Loader from "react-loader-spinner";
 import { Container } from "reactstrap";
-import spinningcircles from './spinning-circles.svg';
 
 export default class Home extends Component {
 
@@ -35,9 +35,9 @@ export default class Home extends Component {
   render() {
     if(this.state.isLoading){
       return(
-        <React.Fragment>
-          <img src={spinningcircles}></img>
-        </React.Fragment>
+        <Container style={{ textAlign: 'center', marginTop: '35%' }}>
+          <Loader type="Circles" color="#00BFFF" height={80} width={80}/>
+        </Container>
       )
     }
     return (
