@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ListGroupItem, Col, Row, Button, Nav, NavLink } from "reactstrap";
+import { ListGroupItem, Col, Row, Button, NavLink } from "reactstrap";
 
 export default class ListItem extends Component {
   constructor(props) {
@@ -10,17 +10,17 @@ export default class ListItem extends Component {
     if(this.props.type === "todo"){
       return (
         <ListGroupItem>
-        <Row>
-          <Col>
-            <Row>
-              <p>Title: {this.props.title}</p>
-            </Row>
-            <Row>
-              <p>Completed: {this.props.completed.toString()}</p>
-            </Row>
-          </Col>
-        </Row>
-      </ListGroupItem>
+          <Row>
+            <Col>
+              <Row>
+                <p>Title: {this.props.title}</p>
+              </Row>
+              <Row>
+                <p>Completed: {this.props.completed.toString()}</p>
+              </Row>
+            </Col>
+          </Row>
+        </ListGroupItem>
     );
     }
     if(this.props.type === "posts"){
@@ -44,7 +44,7 @@ export default class ListItem extends Component {
         <ListGroupItem>
           <Row>
             <Col>
-              <img src="https://picsum.photos/24/24" />
+              <img src="https://picsum.photos/120/120" />
             </Col>
             <Col>
               <Row>

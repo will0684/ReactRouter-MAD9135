@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Header from './Header';
+import { Container } from "reactstrap";
 import ListContainer from './ListContainer';
+import spinningcircles from "./spinning-circles.svg"
 
 export default class UserTodos extends Component {
 
@@ -11,7 +13,8 @@ export default class UserTodos extends Component {
         id: "",
         title: "",
         completed: ""
-      }]
+      }],
+      isLoading: true
     }
   }
 
@@ -25,14 +28,23 @@ export default class UserTodos extends Component {
         })
       })
     })
+    .then(() => {this.setState({isLoading: false})})
   }
 
   render() {
-    return (
-      <div>
-        <Header />
-        <ListContainer type="Todos" todosArray={this.state.todosArray} />
-      </div>
-    )
+    if(this.state.isLoading){
+      return(
+        <React.Fragment>
+          <img src={spinningcircles}></img>
+        </React.Fragment>
+      )
+    } else {
+      return (
+        <Container className="pr-0">
+          <Header />
+          <ListContainer type="Todos" todosArray={this.state.todosArray} />
+        </Container>
+      )
+    }
   }
 }
